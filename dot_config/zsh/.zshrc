@@ -167,6 +167,105 @@ export PATH="/Users/shimizutoorushin/.local/bin:$PATH"
 alias gitmc="gitmoji -c"
 alias cat="bat"
 alias ls="eza -aal --icons"
+alias ghq="ghq 2>/dev/null"
 setopt AUTO_CD
 cdpath=(.. ~ ~/src)
+
+# githubのリポジトリを検索して移動
+ghfd() {
+  local src=$(ghq list 2>/dev/null | fzf --preview "bat --color=always --style=header,grid --line-range :80 $(ghq root)/{}/README.*")
+  if [ -n "$src" ]; then
+    cd "$(ghq root)/$src"
+  fi
+}
+
+# 現在のフォルダ配下のフォルダを検索して移動
+fd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+# gitリポジトリ配下のフォルダを検索して移動
+fdgit() {
+  local top_dir
+  top_dir="$(git rev-parse --show-toplevel 2>/dev/null)"
+  if [ -z "$top_dir" ]; then
+    echo "Not in a Git repository."
+    return 1
+  fi
+  local dir
+  dir="$(
+    cd "$top_dir" || return 1
+    find . -type d -not -path '*/.git/*' 2>/dev/null | fzf
+  )"
+  [ -z "$dir" ] && return
+  cd "$top_dir/$dir"
+}
+
+# githubのissueを検索してブラウザで表示
+ghi() {
+  local issues issue number
+  issues="$(gh issue list)" || return 1
+  issue="$(echo "$issues" | fzf --preview 'gh issue view {1}' \
+    --preview-window=right:60% \
+    --preview-window=wrap)" || return 1
+  number="${issue%%[[:space:]]*}"
+  number="${number#'#'}"
+  gh issue view --web "$number"
+}
+
+# githubリポジトリをcloneして移動
+ghcl() {
+  local repo_name="$1"
+  if [ -z "$repo_name" ]; then
+    echo "Usage: ghcl <repo_name>"
+    return 1
+  fi
+  ghq get "$repo_name" || {
+    echo "Error: could not ghq get '$repo_name'"
+    return 1
+  }
+  local repo_path
+  repo_path="$(ghq list -p "$repo_name")"
+  if [ -n "$repo_path" ]; then
+    cd "$repo_path" || {
+      echo "Error: could not cd to '$repo_path'"
+      return 1
+    }
+  else
+    echo "Error: could not find repository path for '$repo_name'"
+    return 1
+  fi
+}
+
+# githubリポジトリを作成してcloneして移動
+ghcr() {
+  local repo_name="$1"
+  local visibility="${2:-private}"  # private default
+  if [ -z "$repo_name" ]; then
+    echo "Usage: ghcr <repo_name> [public|private]"
+    return 1
+  fi
+  gh repo create "$repo_name" --"$visibility" --confirm || {
+    echo "Error: could not create repository '$repo_name'"
+    return 1
+  }
+  ghq get "$repo_name" || {
+    echo "Error: could not ghq get '$repo_name'"
+    return 1
+  }
+  local repo_path
+  repo_path="$(ghq list -p "$repo_name")"
+  if [ -n "$repo_path" ]; then
+    cd "$repo_path" || {
+      echo "Error: could not cd to '$repo_path'"
+      return 1
+    }
+  else
+    echo "Error: could not find repository path for '$repo_name'"
+    return 1
+  fi
+}
 
