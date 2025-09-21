@@ -1,0 +1,24 @@
+[user]
+        name = thomas0124
+        email = qingshuitouzhen@gmail.com
+[init]
+    defaultBranch = main
+[push]
+        default = current
+[fetch]
+        prune = true
+[status]
+        showUntrackedFiles = all
+[core]
+        autocrlf = input
+        ignorecase = false
+        quotepath = false
+        precomposeunicode = true
+        excludesfile = /Users/shimizutoorushin/.config/git/ignore
+[color]
+        ui = true
+        diff = auto
+        status = auto
+        branch = auto
+[merge]
+        conflictStyle = diff3

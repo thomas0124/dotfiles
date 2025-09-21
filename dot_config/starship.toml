@@ -1,0 +1,136 @@
+format = """\
+[](bg:#131921FF fg:#1C3A5E)\
+$os\
+[](fg:#1C3A5E bg:#2B4F7A)\
+$time\
+[](fg:#2B4F7A bg:#9A86FD)\
+$directory\
+[ ](fg:#9A86FD bg:#FCF392)\
+$git_branch\
+$git_status\
+$git_metrics\
+[ ](fg:#FCF392 bg:#3B76F0)\
+[ ](fg:#3B76F0 bg:#1C3A5E)\
+$nodejs\
+$rust\
+$golang\
+$conda\
+$python\
+$php\
+$ruby\
+[ ](fg:#1C3A5E)\
+$hostname\
+$fill\
+$cmd_duration\
+\n$character\
+"""
+
+# コマンドラインに1行分のスペースを入れる
+add_newline = true
+
+[fill]
+symbol = ' '
+
+[os]
+format = "[$symbol]($style)"
+style = "fg:#8DFBD2 bg:#1C3A5E"
+disabled = false
+
+[os.symbols]
+Macos = "  " # nf-fa-apple
+Ubuntu = "  " # nf-linux-ubuntu
+Debian = "  " # nf-linux-debian
+
+[directory]
+style = "fg:#FFFFFF bg:#9A86FD"
+truncation_length = 10
+truncate_to_repo = false
+truncation_symbol = "…/"
+read_only = ' 󰌾 '
+read_only_style = 'fg:#FFFFFF bg:#9A86FD'
+format = '[   $path ]($style)[$read_only]($read_only_style)'
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+[git_branch]
+format = '[$symbol$branch(:$remote_branch) ]($style)'
+symbol = "  "
+style = "fg:#1C3A5E bg:#FCF392"
+
+[git_status]
+format = '[$all_status]($style)'
+style = "fg:#1C3A5E bg:#FCF392"
+
+[git_metrics]
+format = "([+$added]($added_style))[]($added_style)"
+added_style = "fg:#1C3A5E bg:#FCF392"
+deleted_style = "fg:bright-red bg:235"
+disabled = false
+
+[hg_branch]
+format = "[$symbol$branch ]($style)"
+symbol = " "
+
+[cmd_duration]
+format = "[](fg:18)[󰅐 $duration](fg:bright-white bg:18)[](fg:18)"
+
+[line_break]
+disabled = true
+
+[hostname]
+ssh_only = true
+ssh_symbol = "🌐 "
+format = '[$hostname]($style)'
+style = "fg:#2D1C63 bg:#9A86FD"
+disabled = false
+
+[nodejs]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#8DFBD2 bg:#1C3A5E)]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#8DFBD2 bg:#1C3A5E)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#8DFBD2 bg:#1C3A5E)]($style)'
+
+[php]
+symbol = ""
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#8DFBD2 bg:#1C3A5E)]($style)'
+
+[ruby]
+symbol = "" # nf-dev-ruby
+style = "bg:#212736"
+format = '[[ $symbol ($version) ](fg:#8DFBD2 bg:#1C3A5E)]($style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "fg:#E0E6F0 bg:#2B4F7A"
+format = '[ 󱑍 $time ]($style)'
+
+[conda]
+symbol = ' ' # nf-dev-python
+style = 'fg:#8DFBD2 bg:#1C3A5E'
+format = '[ $symbol$environment ]($style)'
+ignore_base = false
+
+[python]
+symbol = ' ' # nf-dev-python
+format = '[ ${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)'
+pyenv_version_name = false
+style = 'fg:#8DFBD2 bg:#1C3A5E'
+
+[character]
+success_symbol = '[❯](bold green) '
+error_symbol = '[✗](#E84D44) '
