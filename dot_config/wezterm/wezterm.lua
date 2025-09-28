@@ -8,6 +8,8 @@ config.font_size = 17.0
 config.line_height = 1.0
 config.font = wezterm.font("HackGen Console NF")
 config.use_ime = true
+config.window_background_opacity = 0.7
+config.macos_window_background_blur = 20
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = false
 config.window_frame = {
@@ -15,6 +17,9 @@ config.window_frame = {
   active_titlebar_bg = "none",
 }
 
+config.window_background_gradient = {
+  colors = { "#000000" },
+}
 
 config.initial_cols = 130
 config.initial_rows = 38
@@ -75,43 +80,5 @@ wezterm.on("update-right-status", function(window, pane)
   end
   window:set_right_status(wezterm.format(text))
 end)
-
-local background_image = "/Users/shimizutoorushin/.config/wezterm/sora.png"
-
-config.background = {
-  -- グラデーションレイヤー
-  {
-    source = {
-      Gradient = {
-        colors = { "#124354", "#001522" },
-        orientation = {
-          Linear = { angle = -30.0 },
-        },
-      },
-    },
-    opacity = 1.0,
-  },
-  -- 画像レイヤー
-  {
-    source = {
-      File = background_image,
-    },
-    opacity = 0.35,
-    vertical_align = "Middle",
-    horizontal_align = "Right",
-    horizontal_offset = "200px",
-    repeat_x = "NoRepeat",
-    repeat_y = "NoRepeat",
-    width = "1431px",
-    height = "1900px",
-  },
-}
-
-config.window_background_opacity = 0.7
-config.macos_window_background_blur = 20
-
-config.window_background_gradient = {
-  colors = { "#000000" },
-}
 
 return config
