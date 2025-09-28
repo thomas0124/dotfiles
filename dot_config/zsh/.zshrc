@@ -269,3 +269,4 @@ ghcr() {
   fi
 }
 
+eval "$(mise activate zsh)"
