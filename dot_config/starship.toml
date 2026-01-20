@@ -3,14 +3,14 @@ format = """\
 $os\
 [](fg:#1C3A5E bg:#2B4F7A)\
 $time\
-[](fg:#2B4F7A bg:#9A86FD)\
+[](fg:#2B4F7A bg:#3B76F0)\
 $directory\
-[ ](fg:#9A86FD bg:#FCF392)\
+[ ](fg:#3B76F0 bg:#FCF392)\
 $git_branch\
 $git_status\
 $git_metrics\
-[ ](fg:#FCF392 bg:#3B76F0)\
-[ ](fg:#3B76F0 bg:#1C3A5E)\
+[ ](fg:#FCF392 bg:#9A86FD)\
+[ ](fg:#9A86FD bg:#1C3A5E)\
 $nodejs\
 $rust\
 $golang\
@@ -23,6 +23,7 @@ $hostname\
 $fill\
 $cmd_duration\
 \n$character\
+
 """
 
 # コマンドラインに1行分のスペースを入れる
@@ -42,12 +43,12 @@ Ubuntu = "  " # nf-linux-ubuntu
 Debian = "  " # nf-linux-debian
 
 [directory]
-style = "fg:#FFFFFF bg:#9A86FD"
+style = "fg:#FFFFFF bg:#3B76F0"
 truncation_length = 10
 truncate_to_repo = false
 truncation_symbol = "…/"
 read_only = ' 󰌾 '
-read_only_style = 'fg:#FFFFFF bg:#9A86FD'
+read_only_style = 'fg:#FFFFFF bg:#3B76F0'
 format = '[   $path ]($style)[$read_only]($read_only_style)'
 
 [directory.substitutions]
