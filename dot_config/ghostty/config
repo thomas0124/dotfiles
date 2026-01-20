@@ -1,7 +1,6 @@
 theme = TokyoNight
 maximize = true
 font-family = HackGen Console NF
-background-image = /Users/shimizutoorushin/Desktop/画像/omoide.jpg
 background-opacity = 0.8
 macos-titlebar-style = tabs
 background-blur = true
