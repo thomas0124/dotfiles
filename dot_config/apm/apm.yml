@@ -1,0 +1,20 @@
+name: shimizutoorushin
+version: 1.0.0
+description: APM project for shimizutoorushin
+author: thomas0124
+dependencies:
+  apm:
+  - mizchi/skills/apm-usage
+  - mizchi/skills/ast-grep-practice
+  - mizchi/skills/cloudflare-deploy
+  - mizchi/skills/conventional-changelog
+  - mizchi/skills/dotenvx
+  - mizchi/skills/empirical-prompt-tuning
+  - mizchi/skills/justfile
+  - mizchi/skills/mizchi-blog-style
+  - mizchi/skills/playwright-cli
+  - mizchi/skills/playwright-test
+  - mizchi/skills/retrospective-codify
+  - mizchi/skills/chezmoi-management
+  mcp: []
+scripts: {}
