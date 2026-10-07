@@ -230,6 +230,7 @@ ghcl() {
   local repo_path
   repo_path="$(ghq list -p "$repo_name")"
   if [ -n "$repo_path" ]; then
+    bash ~/.config/herdr/add-project.sh "$repo_path"
     cd "$repo_path" || {
       echo "Error: could not cd to '$repo_path'"
       return 1
@@ -259,6 +260,7 @@ ghcr() {
   local repo_path
   repo_path="$(ghq list -p "$repo_name")"
   if [ -n "$repo_path" ]; then
+    bash ~/.config/herdr/add-project.sh "$repo_path"
     cd "$repo_path" || {
       echo "Error: could not cd to '$repo_path'"
       return 1
@@ -333,3 +335,21 @@ bindkey '^b' select-git-branch-friendly
 
 alias g='gitui'
 alias pn='pnpm'
+
+# herdr: pane と workspace の表示名を cwd のディレクトリ名で更新
+_herdr_report_cwd() {
+    [[ -z "$HERDR_PANE_ID" ]] && return
+    local name
+    name=$(basename "$PWD")
+    herdr pane report-metadata "$HERDR_PANE_ID" \
+        --source "shell-cwd" --token "project=${name}" 2>/dev/null &!
+    [[ -z "$HERDR_WORKSPACE_ID" ]] && return
+    herdr workspace report-metadata "$HERDR_WORKSPACE_ID" \
+        --source "shell-cwd" --token "project=${name}" 2>/dev/null &!
+}
+chpwd_functions+=(_herdr_report_cwd)
+_herdr_report_cwd
+# Unity CLI
+. "/Users/shimizutoorushin/.unity/env"
+
+[[ -r "$HOME/.config/zsh/mac-daily.zsh" ]] && source "$HOME/.config/zsh/mac-daily.zsh"

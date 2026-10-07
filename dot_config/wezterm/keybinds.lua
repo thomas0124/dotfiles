@@ -126,15 +126,56 @@ return {
     { key = "s", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
     -- SEARCHモードの起動
     { key = "f", mods = "SUPER", action = act.Search { CaseInSensitiveString = "" }, },
+
+    -- スクロール（Copy Modeなしで直接スクロール）
+    { key = "PageUp",   mods = "SHIFT",       action = act.ScrollByPage(-1) },
+    { key = "PageDown", mods = "SHIFT",       action = act.ScrollByPage(1) },
+    { key = "u",        mods = "CTRL|SHIFT",  action = act.ScrollByPage(-0.5) },
+    { key = "d",        mods = "CTRL|SHIFT",  action = act.ScrollByPage(0.5) },
+    { key = "k",        mods = "CTRL|SHIFT",  action = act.ScrollByLine(-3) },
+    { key = "j",        mods = "CTRL|SHIFT",  action = act.ScrollByLine(3) },
+
+    -- QuickSelect（URL・ファイルパス・git hashなどをキーボードで素早くコピー）
+    { key = " ", mods = "LEADER", action = act.QuickSelect },
+
+    -- タブリネーム
+    { key = ",", mods = "LEADER", action = act.PromptInputLine {
+        description = "(wezterm) Set tab title:",
+        action = wezterm.action_callback(function(win, pane, line)
+          if line then
+            win:active_tab():set_title(line)
+          end
+        end),
+      }
+    },
+
+    -- Pane 視覚選択（番号で移動）
+    { key = "q", mods = "LEADER", action = act.PaneSelect },
+    -- Pane 視覚選択してアクティブPaneと入れ替え
+    { key = "x", mods = "LEADER", action = act.PaneSelect { mode = "SwapWithActive" } },
+    -- Pane を時計回りにローテーション
+    { key = "o", mods = "LEADER", action = act.RotatePanes "Clockwise" },
+
+    -- Workspace 順送り・逆送り
+    { key = "}", mods = "LEADER", action = act.SwitchWorkspaceRelative(1) },
+    { key = "{", mods = "LEADER", action = act.SwitchWorkspaceRelative(-1) },
+
+    -- 新規OSウィンドウ
+    { key = "N", mods = "LEADER", action = act.SpawnWindow },
   },
 
   key_tables = {
     -- RESIZEモード（Paneサイズ調整）
     resize_pane = {
-      { key = "h", action = act.AdjustPaneSize({ "Left", 1 }) },
-      { key = "l", action = act.AdjustPaneSize({ "Right", 1 }) },
-      { key = "k", action = act.AdjustPaneSize({ "Up", 1 }) },
-      { key = "j", action = act.AdjustPaneSize({ "Down", 1 }) },
+      { key = "h", action = act.AdjustPaneSize({ "Left", 5 }) },
+      { key = "l", action = act.AdjustPaneSize({ "Right", 5 }) },
+      { key = "k", action = act.AdjustPaneSize({ "Up", 5 }) },
+      { key = "j", action = act.AdjustPaneSize({ "Down", 5 }) },
+      -- 微調整
+      { key = "h", mods = "SHIFT", action = act.AdjustPaneSize({ "Left", 1 }) },
+      { key = "l", mods = "SHIFT", action = act.AdjustPaneSize({ "Right", 1 }) },
+      { key = "k", mods = "SHIFT", action = act.AdjustPaneSize({ "Up", 1 }) },
+      { key = "j", mods = "SHIFT", action = act.AdjustPaneSize({ "Down", 1 }) },
       -- RESIZEモード終了
       { key = "Enter", action = "PopKeyTable" },
     },
@@ -152,6 +193,10 @@ return {
       -- 単語ごと移動
       { key = "w", mods = "NONE", action = act.CopyMode("MoveForwardWord") },
       { key = "b", mods = "NONE", action = act.CopyMode("MoveBackwardWord") },
+      { key = "e", mods = "NONE", action = act.CopyMode("MoveForwardWordEnd") },
+      -- 行頭（0）・行末（$）
+      { key = "0", mods = "NONE", action = act.CopyMode("MoveToStartOfLine") },
+      { key = "$", mods = "NONE", action = act.CopyMode("MoveToEndOfLineContent") },
       -- 最後尾へ
       { key = "G", mods = "NONE", action = act.CopyMode("MoveToScrollbackBottom") },
       -- 先頭へ
@@ -165,6 +210,8 @@ return {
       -- スクロール
       { key = "b", mods = "CTRL", action = act.CopyMode("PageUp") },
       { key = "f", mods = "CTRL", action = act.CopyMode("PageDown") },
+      { key = "u", mods = "CTRL", action = act.CopyMode("PageUp") },
+      { key = "d", mods = "CTRL", action = act.CopyMode("PageDown") },
       -- 範囲選択モード（文字選択）
       { key = "v", mods = "NONE", action = act.CopyMode({ SetSelectionMode = "Cell" }) },
       -- 範囲選択モード（行選択）
