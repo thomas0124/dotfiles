@@ -11,6 +11,7 @@ config.use_ime = true
 config.window_background_opacity = 0.7
 config.macos_window_background_blur = 20
 config.window_decorations = "RESIZE"
+config.color_scheme = "Tokyo Night Storm"
 config.hide_tab_bar_if_only_one_tab = false
 config.window_frame = {
   inactive_titlebar_bg = "none",
@@ -79,6 +80,11 @@ wezterm.on("update-right-status", function(window, pane)
     table.insert(text, { Text = "WORKSPACE: " .. workspace })
   end
   window:set_right_status(wezterm.format(text))
+end)
+
+wezterm.on("gui-startup", function()
+  local _, _, window = wezterm.mux.spawn_window {}
+  window:gui_window():maximize()
 end)
 
 return config

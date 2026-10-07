@@ -557,3 +557,4 @@ terraform.rc
 packaged.yaml
 samconfig.toml
 *.db
+**/.claude/settings.local.json
